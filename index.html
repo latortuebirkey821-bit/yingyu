@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍩 哆啦A梦 · 单词乐园 🍩</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #b1d4f0 0%, #d9ecff 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Patrick Hand', 'Yuanti SC', cursive, sans-serif;
+            padding: 12px;
+        }
+
+        /* 主卡片 */
+        .homepage {
+            max-width: 1000px;
+            width: 100%;
+            background-color: #e8f3ff;
+            border-radius: 70px 70px 45px 45px;
+            box-shadow: 0 20px 0 #5a8cbf, 0 25px 30px #7da2c4;
+            border: 5px solid white;
+            padding: 1.8rem 1.8rem 2.2rem;
+            position: relative;
+        }
+
+        /* 哆啦A梦装饰 */
+        .homepage::before {
+            content: "🔔";
+            font-size: 3rem;
+            position: absolute;
+            top: 10px;
+            right: 30px;
+            opacity: 0.3;
+            transform: rotate(15deg);
+            z-index: 1;
+        }
+
+        /* 头部 */
+        .title-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 5;
+        }
+
+        .title-block {
+            background: #c2e0ff;
+            border-radius: 70px;
+            padding: 0.4rem 2rem 0.8rem 2rem;
+            box-shadow: 0 10px 0 #3f7ab3, 0 8px 15px #9ac0e5;
+            border: 4px solid white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .title-block h1 {
+            font-size: 3.2rem;
+            color: #104e8b;
+            text-shadow: 3px 3px 0 #aad0ff;
+        }
+
+        .dora-icon {
+            font-size: 3.5rem;
+            background: #f9d71c;
+            border-radius: 50%;
+            padding: 0.5rem 0.8rem 0.3rem 0.8rem;
+            box-shadow: 0 8px 0 #b0891a, 0 0 0 4px white;
+        }
+
+        /* 选择你的冒险 */
+        .choose-line {
+            background: #c9e3ff;
+            border-radius: 60px;
+            padding: 0.8rem 1.8rem;
+            margin: 1rem 0 1.5rem;
+            border: 4px dashed #0070c0;
+            box-shadow: 0 6px 0 #528ac9;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .choose-line p {
+            font-size: 2rem;
+            color: #014182;
+            background: white;
+            border-radius: 40px;
+            padding: 0.3rem 1.8rem;
+            border: 3px solid #0070c0;
+        }
+
+        .dora-bell {
+            font-size: 2.2rem;
+            background: #ffe18a;
+            border-radius: 40px;
+            padding: 0.3rem 1.8rem;
+            border: 3px solid white;
+            color: #5a2e00;
+            box-shadow: 0 5px 0 #d6a10b;
+        }
+
+        /* 游戏模式卡片 - 三个并排 */
+        .mode-row {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 1.5rem 0 2rem;
+        }
+
+        .mode-card {
+            flex: 1;
+            max-width: 220px;
+            background: #d9f0ff;
+            border-radius: 50px 50px 35px 35px;
+            padding: 1.2rem 1rem 1.5rem;
+            border: 4px solid white;
+            box-shadow: 0 12px 0 #3d74a8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .mode-card.active {
+            background: #f9d71c;
+            transform: translateY(-5px);
+            box-shadow: 0 14px 0 #b0891a;
+        }
+
+        .mode-icon {
+            font-size: 3.5rem;
+            background: #ffb6d1;
+            border-radius: 50%;
+            padding: 0.6rem;
+            border: 4px solid white;
+            margin-bottom: 0.8rem;
+            box-shadow: 0 7px 0 #b0265a;
+            width: 75px;
+            height: 75px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mode-title {
+            font-size: 2rem;
+            color: #0b3f6b;
+            background: #b2d9ff;
+            padding: 0.1rem 1rem 0.4rem;
+            border-radius: 30px;
+            border: 3px solid white;
+            width: 100%;
+        }
+
+        .mode-desc {
+            font-size: 1.4rem;
+            color: #014182;
+            margin-top: 0.5rem;
+        }
+
+        /* 类别选择 */
+        .category-wrap {
+            background: #b8d9f5;
+            border-radius: 70px;
+            padding: 1rem 1.2rem;
+            border: 4px solid white;
+            margin: 1rem 0;
+        }
+
+        .section-label {
+            font-size: 1.9rem;
+            color: #003b6f;
+            margin-bottom: 0.8rem;
+            padding-left: 0.5rem;
+        }
+
+        .category-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem 0.9rem;
+            justify-content: center;
+        }
+
+        .cat-item {
+            background: #ffffff;
+            font-size: 1.7rem;
+            padding: 0.4rem 1.2rem;
+            border-radius: 50px;
+            border: 3px solid #007acc;
+            color: #014a81;
+            box-shadow: 0 5px 0 #3f78b3;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+        }
+
+        .cat-item.selected {
+            background: #f9d71c;
+            border-color: white;
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 #b0891a;
+        }
+
+        /* 游戏内容区域 - 在这里显示当前选中的游戏 */
+        .game-content {
+            background: white;
+            border-radius: 60px 60px 40px 40px;
+            padding: 2rem 1.5rem;
+            border: 5px solid #0070c0;
+            margin: 1.5rem 0 1rem;
+            min-height: 400px;
+            box-shadow: inset 0 -3px 0 #3d74a8, 0 15px 20px #7fa9d1;
+        }
+
+        /* 单词卡片游戏样式 */
+        .flashcard-game {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .big-card {
+            background: #e8f3ff;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 60px;
+            padding: 2rem 1rem;
+            text-align: center;
+            border: 5px solid white;
+            box-shadow: 0 15px 0 #3d74a8;
+            margin-bottom: 1.5rem;
+        }
+
+        .word-display {
+            font-size: 5rem;
+            color: #104e8b;
+            text-shadow: 3px 3px 0 #aad0ff;
+        }
+
+        .phonetic-hint {
+            font-size: 2rem;
+            color: #014182;
+            background: #ecf7ff;
+            display: inline-block;
+            padding: 0.3rem 2rem;
+            border-radius: 40px;
+            border: 3px solid #0070c0;
+            margin: 0.5rem 0 1rem;
+        }
+
+        .speak-btn {
+            background: #ffb6d1;
+            border: 4px solid white;
+            font-size: 1.8rem;
+            padding: 0.6rem 2rem;
+            border-radius: 50px;
+            color: #b0265a;
+            box-shadow: 0 6px 0 #b0265a;
+            cursor: pointer;
+            margin: 0.5rem 0;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .nav-btn {
+            background: #ffe18a;
+            border: 4px solid white;
+            border-radius: 35px;
+            padding: 0.8rem 2rem;
+            font-size: 1.8rem;
+            color: #5a2e00;
+            box-shadow: 0 6px 0 #d6a10b;
+            cursor: pointer;
+        }
+
+        /* 测验模式样式 */
+        .quiz-game {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .question-box {
+            background: #e8f3ff;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 60px;
+            padding: 1.5rem;
+            border: 5px solid white;
+            box-shadow: 0 15px 0 #3d74a8;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .question-word {
+            font-size: 4rem;
+            color: #104e8b;
+            text-shadow: 2px 2px 0 #aad0ff;
+            margin-bottom: 1rem;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            max-width: 500px;
+            width: 100%;
+            margin: 1rem 0;
+        }
+
+        .option-item {
+            background: #d9f0ff;
+            border: 4px solid white;
+            border-radius: 40px;
+            padding: 1rem;
+            font-size: 1.8rem;
+            color: #014182;
+            box-shadow: 0 5px 0 #3d74a8;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .option-item.correct {
+            background: #8bef8b;
+            color: #006400;
+        }
+
+        .option-item.wrong {
+            background: #ff8a8a;
+            color: #8b0000;
+        }
+
+        .score-display {
+            font-size: 1.8rem;
+            color: #014182;
+            margin: 1rem 0;
+        }
+
+        /* 拼写比赛样式 */
+        .spelling-game {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .spelling-box {
+            background: #e8f3ff;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 60px;
+            padding: 1.5rem;
+            border: 5px solid white;
+            box-shadow: 0 15px 0 #3d74a8;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .meaning-hint {
+            font-size: 1.8rem;
+            color: #014182;
+            margin-bottom: 1rem;
+        }
+
+        .blank-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .blank-letter {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border: 3px solid #0070c0;
+            border-radius: 25px;
+            font-size: 2.5rem;
+            text-align: center;
+            line-height: 54px;
+            color: #014182;
+        }
+
+        .blank-letter.empty {
+            background: #ecf7ff;
+            border: 3px dashed #0070c0;
+        }
+
+        .letters-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            justify-content: center;
+            margin: 1.5rem 0;
+        }
+
+        .letter-tile {
+            background: #ffb6d1;
+            min-width: 60px;
+            padding: 0.6rem 1rem;
+            border-radius: 30px;
+            border: 3px solid white;
+            font-size: 2.2rem;
+            color: #b0265a;
+            box-shadow: 0 5px 0 #b0265a;
+            cursor: pointer;
+        }
+
+        .letter-tile.used {
+            opacity: 0.3;
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 #b0265a;
+            pointer-events: none;
+        }
+
+        .message {
+            font-size: 1.8rem;
+            color: #014182;
+            margin: 1rem 0;
+            min-height: 2.5rem;
+        }
+
+        /* 隐藏类 */
+        .hidden {
+            display: none !important;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 1.6rem;
+            color: #014182;
+        }
+    </style>
+</head>
+<body>
+    <div class="homepage">
+        <!-- 头部 -->
+        <div class="title-row">
+            <div class="title-block">
+                <span class="dora-icon">🐱</span>
+                <h1>单词探险家</h1>
+            </div>
+            <div class="dora-icon">🔔</div>
+        </div>
+
+        <!-- 选择你的冒险 -->
+        <div class="choose-line">
+            <p>✨ 选择你的冒险 ✨</p>
+            <span class="dora-bell">🔔 任意门</span>
+        </div>
+
+        <!-- 三个游戏卡片 - 点击切换游戏 -->
+        <div class="mode-row">
+            <div class="mode-card active" data-game="flashcard">
+                <div class="mode-icon">🃏</div>
+                <div class="mode-title">单词卡片</div>
+                <div class="mode-desc">按自己的节奏学习</div>
+            </div>
+            <div class="mode-card" data-game="quiz">
+                <div class="mode-icon">🔍</div>
+                <div class="mode-title">测验模式</div>
+                <div class="mode-desc">匹配单词与含义</div>
+            </div>
+            <div class="mode-card" data-game="spelling">
+                <div class="mode-icon">✏️</div>
+                <div class="mode-title">拼写比赛</div>
+                <div class="mode-desc">听单词正确拼写</div>
+            </div>
+        </div>
+
+        <!-- 类别选择 -->
+        <div class="category-wrap">
+            <div class="section-label"><span>🔮</span> 选择类别</div>
+            <div class="category-cloud">
+                <div class="cat-item selected" data-cat="all"><span>🔤</span> 全部单词</div>
+                <div class="cat-item" data-cat="numbers"><span>①</span> Numbers</div>
+                <div class="cat-item" data-cat="colors"><span>🎨</span> Colors</div>
+                <div class="cat-item" data-cat="family"><span>👪</span> Family</div>
+                <div class="cat-item" data-cat="animals"><span>🐶</span> Animals</div>
+            </div>
+        </div>
+
+        <!-- 游戏内容区域 - 单词卡片游戏 (默认显示) -->
+        <div id="flashcardGame" class="game-content flashcard-game">
+            <div class="big-card">
+                <div class="word-display" id="flashWord">one</div>
+                <div class="phonetic-hint" id="flashPhonic">[wʌn]</div>
+                <button class="speak-btn" id="speakFlashBtn">🔔 听发音</button>
+            </div>
+            <div class="nav-buttons">
+                <div class="nav-btn" id="prevFlashBtn">◀ 上一个</div>
+                <div class="nav-btn" id="nextFlashBtn">下一个 ▶</div>
+            </div>
+        </div>
+
+        <!-- 游戏内容区域 - 测验模式 (初始隐藏) -->
+        <div id="quizGame" class="game-content quiz-game hidden">
+            <div class="question-box">
+                <div class="question-word" id="quizWord">one</div>
+                <button class="speak-btn" id="speakQuizBtn">🔔 听发音</button>
+            </div>
+            <div id="quizOptions" class="options-grid"></div>
+            <div class="score-display" id="quizScore">得分: 0 / 0</div>
+            <div class="nav-btn" id="nextQuizBtn">下一题 ▶</div>
+        </div>
+
+        <!-- 游戏内容区域 - 拼写比赛 (初始隐藏) -->
+        <div id="spellingGame" class="game-content spelling-game hidden">
+            <div class="spelling-box">
+                <div class="meaning-hint" id="spellingHint">含义: 一</div>
+                <button class="speak-btn" id="speakSpellingBtn">🔔 听发音</button>
+                <div id="spellingBlanks" class="blank-row"></div>
+                <div id="spellingLetters" class="letters-row"></div>
+                <div class="nav-btn" id="checkSpellingBtn">✅ 检查</div>
+                <div id="spellingMessage" class="message"></div>
+                <div class="nav-btn" id="nextSpellingBtn">下一题 ▶</div>
+            </div>
+        </div>
+
+        <footer>🐱 哆啦A梦陪你学单词 · 点击卡片切换游戏</footer>
+    </div>
+
+    <script>
+        // ==================== 全局数据 ====================
+        const vocabulary = {
+            all: [
+                { word: 'one', phonetic: '[wʌn]', meaning: '一' },
+                { word: 'two', phonetic: '[tuː]', meaning: '二' },
+                { word: 'three', phonetic: '[θriː]', meaning: '三' },
+                { word: 'four', phonetic: '[fɔːr]', meaning: '四' },
+                { word: 'five', phonetic: '[faɪv]', meaning: '五' },
+                { word: 'red', phonetic: '[red]', meaning: '红色' },
+                { word: 'blue', phonetic: '[bluː]', meaning: '蓝色' },
+                { word: 'cat', phonetic: '[kæt]', meaning: '猫' },
+                { word: 'dog', phonetic: '[dɔːɡ]', meaning: '狗' }
+            ],
+            numbers: [
+                { word: 'one', phonetic: '[wʌn]', meaning: '一' },
+                { word: 'two', phonetic: '[tuː]', meaning: '二' },
+                { word: 'three', phonetic: '[θriː]', meaning: '三' },
+                { word: 'four', phonetic: '[fɔːr]', meaning: '四' },
+                { word: 'five', phonetic: '[faɪv]', meaning: '五' }
+            ],
+            colors: [
+                { word: 'red', phonetic: '[red]', meaning: '红色' },
+                { word: 'blue', phonetic: '[bluː]', meaning: '蓝色' },
+                { word: 'yellow', phonetic: '[ˈjeloʊ]', meaning: '黄色' },
+                { word: 'green', phonetic: '[ɡriːn]', meaning: '绿色' }
+            ],
+            family: [
+                { word: 'dad', phonetic: '[dæd]', meaning: '爸爸' },
+                { word: 'mum', phonetic: '[mʌm]', meaning: '妈妈' },
+                { word: 'brother', phonetic: '[ˈbrʌðər]', meaning: '兄弟' },
+                { word: 'sister', phonetic: '[ˈsɪstər]', meaning: '姐妹' }
+            ],
+            animals: [
+                { word: 'cat', phonetic: '[kæt]', meaning: '猫' },
+                { word: 'dog', phonetic: '[dɔːɡ]', meaning: '狗' },
+                { word: 'bird', phonetic: '[bɜːrd]', meaning: '鸟' }
+            ]
+        };
+
+        // 当前选中的类别和数据
+        let currentCategory = 'all';
+        let currentList = vocabulary.all;
+
+        // 各个游戏的状态
+        let flashcardIndex = 0;
+        let quizIndex = 0;
+        let quizScore = 0;
+        let quizTotal = 0;
+        let spellingIndex = 0;
+        let spellingCurrentWord = '';
+        let spellingCurrentLetters = [];
+        let spellingFilled = [];
+
+        // ==================== 语音功能 ====================
+        function speakWord(word) {
+            if (!window.speechSynthesis) return;
+            const utterance = new SpeechSynthesisUtterance(word);
+            utterance.lang = 'en-US';
+            utterance.rate = 0.9;
+            utterance.pitch = 1.2;
+            window.speechSynthesis.cancel();
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // ==================== 类别切换 ====================
+        const catItems = document.querySelectorAll('.cat-item');
+        catItems.forEach(item => {
+            item.addEventListener('click', function() {
+                catItems.forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+                
+                currentCategory = this.getAttribute('data-cat');
+                currentList = vocabulary[currentCategory] || vocabulary.all;
+                
+                // 重置所有游戏的状态
+                flashcardIndex = 0;
+                quizIndex = 0;
+                quizScore = 0;
+                quizTotal = 0;
+                spellingIndex = 0;
+                
+                // 刷新当前显示的游戏
+                updateFlashcard();
+                updateQuiz();
+                initSpelling();
+            });
+        });
+
+        // ==================== 游戏切换 ====================
+        const modeCards = document.querySelectorAll('.mode-card');
+        const flashcardGame = document.getElementById('flashcardGame');
+        const quizGame = document.getElementById('quizGame');
+        const spellingGame = document.getElementById('spellingGame');
+
+        modeCards.forEach(card => {
+            card.addEventListener('click', function() {
+                modeCards.forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                
+                const game = this.getAttribute('data-game');
+                flashcardGame.classList.add('hidden');
+                quizGame.classList.add('hidden');
+                spellingGame.classList.add('hidden');
+                
+                if (game === 'flashcard') {
+                    flashcardGame.classList.remove('hidden');
+                    updateFlashcard();
+                } else if (game === 'quiz') {
+                    quizGame.classList.remove('hidden');
+                    updateQuiz();
+                } else if (game === 'spelling') {
+                    spellingGame.classList.remove('hidden');
+                    initSpelling();
+                }
+            });
+        });
+
+        // ==================== 单词卡片游戏 ====================
+        const flashWord = document.getElementById('flashWord');
+        const flashPhonic = document.getElementById('flashPhonic');
+        
+        function updateFlashcard() {
+            const item = currentList[flashcardIndex];
+            flashWord.textContent = item.word;
+            flashPhonic.textContent = item.phonetic;
+        }
+
+        document.getElementById('speakFlashBtn').addEventListener('click', () => {
+            speakWord(currentList[flashcardIndex].word);
+        });
+
+        document.getElementById('prevFlashBtn').addEventListener('click', () => {
+            flashcardIndex = (flashcardIndex - 1 + currentList.length) % currentList.length;
+            updateFlashcard();
+        });
+
+        document.getElementById('nextFlashBtn').addEventListener('click', () => {
+            flashcardIndex = (flashcardIndex + 1) % currentList.length;
+            updateFlashcard();
+        });
+
+        // ==================== 测验模式游戏 ====================
+        const quizWord = document.getElementById('quizWord');
+        const quizOptions = document.getElementById('quizOptions');
+        const quizScoreDisplay = document.getElementById('quizScore');
+        let canAnswer = true;
+
+        function updateQuiz() {
+            const item = currentList[quizIndex];
+            quizWord.textContent = item.word;
+            
+            // 生成4个选项（包含正确答案和3个随机其他含义）
+            let options = [item.meaning];
+            const otherMeanings = currentList
+                .filter((_, idx) => idx !== quizIndex)
+                .map(i => i.meaning)
+                .filter((v, i, a) => a.indexOf(v) === i); // 去重
+            
+            while (options.length < 4 && otherMeanings.length > 0) {
+                const randomIndex = Math.floor(Math.random() * otherMeanings.length);
+                options.push(otherMeanings[randomIndex]);
+                otherMeanings.splice(randomIndex, 1);
+            }
+            
+            // 随机打乱
+            options.sort(() => Math.random() - 0.5);
+            
+            // 渲染选项
+            quizOptions.innerHTML = '';
+            options.forEach(opt => {
+                const btn = document.createElement('div');
+                btn.className = 'option-item';
+                btn.textContent = opt;
+                btn.addEventListener('click', () => checkQuizAnswer(btn, opt === item.meaning));
+                quizOptions.appendChild(btn);
+            });
+            
+            canAnswer = true;
+            updateQuizScore();
+        }
+
+        function checkQuizAnswer(btn, isCorrect) {
+            if (!canAnswer) return;
+            canAnswer = false;
+            
+            if (isCorrect) {
+                btn.classList.add('correct');
+                quizScore++;
+            } else {
+                btn.classList.add('wrong');
+                // 高亮正确答案
+                document.querySelectorAll('.option-item').forEach(opt => {
+                    if (opt.textContent === currentList[quizIndex].meaning) {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+            
+            quizTotal++;
+            updateQuizScore();
+        }
+
+        function updateQuizScore() {
+            quizScoreDisplay.textContent = `得分: ${quizScore} / ${quizTotal}`;
+        }
+
+        document.getElementById('speakQuizBtn').addEventListener('click', () => {
+            speakWord(currentList[quizIndex].word);
+        });
+
+        document.getElementById('nextQuizBtn').addEventListener('click', () => {
+            quizIndex = (quizIndex + 1) % currentList.length;
+            updateQuiz();
+        });
+
+        // ==================== 拼写比赛游戏 ====================
+        const spellingHint = document.getElementById('spellingHint');
+        const spellingBlanks = document.getElementById('spellingBlanks');
+        const spellingLetters = document.getElementById('spellingLetters');
+        const spellingMessage = document.getElementById('spellingMessage');
+
+        function initSpelling() {
+            const item = currentList[spellingIndex];
+            spellingHint.textContent = `含义: ${item.meaning}`;
+            spellingCurrentWord = item.word;
+            spellingFilled = new Array(item.word.length).fill('');
+            
+            // 生成字母选项（正确字母 + 2个干扰）
+            let letters = item.word.split('');
+            const extras = ['a', 'e', 'i', 'o', 'u', 'b', 'c', 'p'];
+            for (let i = 0; i < 2; i++) {
+                letters.push(extras[Math.floor(Math.random() * extras.length)]);
+            }
+            spellingCurrentLetters = letters.sort(() => Math.random() - 0.5);
+            
+            renderSpelling();
+            spellingMessage.textContent = '';
+        }
+
+        function renderSpelling() {
+            // 渲染空白框
+            let blanksHtml = '';
+            for (let i = 0; i < spellingCurrentWord.length; i++) {
+                blanksHtml += `<div class="blank-letter empty" data-pos="${i}"></div>`;
+            }
+            spellingBlanks.innerHTML = blanksHtml;
+            
+            // 渲染字母选项
+            let lettersHtml = '';
+            spellingCurrentLetters.forEach((letter, idx) => {
+                lettersHtml += `<div class="letter-tile" data-letter="${letter}" data-idx="${idx}">${letter}</div>`;
+            });
+            spellingLetters.innerHTML = lettersHtml;
+            
+            // 绑定字母点击事件
+            document.querySelectorAll('.letter-tile').forEach(tile => {
+                tile.addEventListener('click', letterClickHandler);
+            });
+        }
+
+        function letterClickHandler(e) {
+            const tile = e.currentTarget;
+            if (tile.classList.contains('used')) return;
+            
+            const letter = tile.dataset.letter;
+            const blanks = document.querySelectorAll('#spellingBlanks .blank-letter');
+            
+            // 找第一个空白框
+            for (let i = 0; i < blanks.length; i++) {
+                if (!blanks[i].textContent) {
+                    blanks[i].textContent = letter;
+                    blanks[i].classList.remove('empty');
+                    spellingFilled[i] = letter;
+                    tile.classList.add('used');
+                    break;
+                }
+            }
+        }
+
+        document.getElementById('speakSpellingBtn').addEventListener('click', () => {
+            speakWord(spellingCurrentWord);
+        });
+
+        document.getElementById('checkSpellingBtn').addEventListener('click', () => {
+            const guessed = spellingFilled.join('');
+            if (guessed === spellingCurrentWord) {
+                spellingMessage.textContent = '🎉 完全正确！好棒！ 🎉';
+                speakWord(spellingCurrentWord);
+            } else {
+                spellingMessage.textContent = '😿 拼写不正确，再试试吧';
+            }
+        });
+
+        document.getElementById('nextSpellingBtn').addEventListener('click', () => {
+            spellingIndex = (spellingIndex + 1) % currentList.length;
+            initSpelling();
+        });
+
+        // ==================== 初始化 ====================
+        // 默认选中全部单词
+        updateFlashcard();
+        updateQuiz();
+        initSpelling();
+    </script>
+</body>
+</html>
